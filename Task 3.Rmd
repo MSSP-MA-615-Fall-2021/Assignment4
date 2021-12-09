@@ -22,6 +22,7 @@ tnum.setSpace("test2")
 # tnBooksFromLines(martian_tnum$text, "Glasser/the_martian_1")
 # tnum.getDBPathList(taxonomy = "subject", level = 2)
 ```
+
 ```{r,echo = FALSE}
 # data cleaning and query
 tnum_df <- tnum.query(query = "glasser/the_martian_1/section# has *", max = 5000) %>% tnum.objectsToDf() %>% filter(property == "text")
@@ -31,15 +32,18 @@ sentence_tidy <- sentence %>% separate(Section,into = c("char1","Section",sep = 
   separate(Sentence,into = c("char3","Sentence"),sep = ":",fill = "right") %>% 
   dplyr::select(4,6,7,9,12,13,16) 
 ```
+
 # TNUM Analysis
-For the first step in this task, I will connect to the tnum database and upload the book I chose from the task I, The Martian, and then use the function from class to upload the book into the tnum database under “test 2”. After downloading the data from tnum, I tidy the data frame and make it more presentable. The data frame should look like Table 1 and Table 2 in Appendix.
+
+For the first step in this task, I will connect to the tnum database and upload the book I chose from the task I, The Martian, and then use the function from class to upload the book into the tnum database under "test 2". After downloading the data from tnum, I tidy the data frame and make it more presentable. The data frame should look like Table 1 and Table 2 in Appendix.
 
 # Plot With TNUM Database
-## Plotting 
+
+## Plotting
+
 By using the "sentimentr" package, there are several graphs that illustrate the emotion levels. In Figure 1, I created two different levels, sentiment and emotional. On the sentiment level, negative sentiment increased in Section 2/Chapter 2, however, this is different from the results I obtained in Task 2. In addition, the graph shows that there are a lot of emotions located at a neutral level, which means neither positive nor negative. If you look at the first graph I made from Task 2, the emotion levels are completely different. Next, by using the emotion levels, we can show that the whole emotion level stays at a low level, which means that there are no big emotional fluctuations throughout the book, in other words, the emotions in this book are mostly sad and flat.
 
 I also made some graphs to illustrate the distribution in different type of word on sentiment and emotion level. For Figure 2, the left side is sentiment level. I used 3 levels to show the distribution of sentiment words in different sections/chapters. On the right side, it indicates the emotion type in different sections/chapters, in other words, it is a complementary plot for sentiment level. For Figure 3, same as Figure 2 to illustrate the sentiment level of the entire book, the emotion level plot I put in the Appendix.
-
 
 ```{r, fig.align='center', fig.cap="Sentiment and Emotion Level"}
 # set theme for plotting
@@ -92,8 +96,7 @@ sentence_out <- sentence_tidy %>% dplyr::mutate(sentence_split = get_sentences(s
 st1 <- plot(sentence_out)
 st2 <- plot(uncombine(sentence_out))
 grid.arrange(st1,st2, ncol = 1)
-``` 
-
+```
 
 ```{r}
 # original database and tidy it
@@ -139,13 +142,15 @@ sentence_out_2method_plot %>%
 ```
 
 # Conclusion
-Even though I used the same database to do the sentiment analysis, it still has a lot of differences especially with the word that different packages define. For the “sentimentr” package, it is easy for me to extract the sentiment either by sentence or group. Furthermore, the “sentimentr” can analyze the text with the emotion level, it will be very useful to combine sentiment level and emotion level together to do the analysis. 
 
+Even though I used the same database to do the sentiment analysis, it still has a lot of differences especially with the word that different packages define. For the "sentimentr" package, it is easy for me to extract the sentiment either by sentence or group. Furthermore, the "sentimentr" can analyze the text with the emotion level, it will be very useful to combine sentiment level and emotion level together to do the analysis.
 
-# Extra Credit 
-The book did not come up with a name of character, the most frequency word to describe the character is "He", so I will use "He" as a tag to query from the database. The first thing is I will add the tag for the word "He" and upload into the database. After that I read the data directly from the database to do the analysis. 
+# Extra Credit
 
-As the graphs illustrate, the sentiment level of the character in this book is pretty neutral. Both graphs indicate that the sentiment level at 0 has higher frequency than other values, which means based on the analysis I did, the character did not have a lot of sentiment change in the entire book. 
+The book did not come up with a name of character, the most frequency word to describe the character is "He", so I will use "He" as a tag to query from the database. The first thing is I will add the tag for the word "He" and upload into the database. After that I read the data directly from the database to do the analysis.
+
+As the graphs illustrate, the sentiment level of the character in this book is pretty neutral. Both graphs indicate that the sentiment level at 0 has higher frequency than other values, which means based on the analysis I did, the character did not have a lot of sentiment change in the entire book.
+
 ```{r, fig.cap="Sentiment Analysis with Specifit Character"}
 # get "he" from database
 he <- tnum.query("*the_martian_1* has * = REGEXP(\"he|He\")", max= 750) %>% 
@@ -165,6 +170,7 @@ grid.arrange(tag_plot_1,tag_plot_2,nrow = 1)
 ```
 
 TNUM data query and add tag for specific word
+
 ```{r,echo = T}
 # get "fear" from database
 # fear <- tnum.query("*the_martian_1* has * = REGEXP(\"fear\")", max= 100) %>% 
@@ -190,7 +196,8 @@ TNUM data query and add tag for specific word
 # list(modifiedCount = 17, tagged = 17, removed = 0)
 ```
 
-Specifit word query by tag from tnum
+Specific word query by tag from tnum
+
 ```{r, echo = T}
 # fear_tag <- tnum.query("@ref:fear_the_martian_1", max= 100) %>% tnum.objectsToDf()
 # soft_tag <- tnum.query("@ref:soft_the_martian_1", max= 100) %>% tnum.objectsToDf()
@@ -203,13 +210,25 @@ Specifit word query by tag from tnum
 # sentiment(dark_tag$string.value) %>% ggplot(aes(element_id, sentiment)) + geom_bar(stat = "identity")
 # tnum.graphPathList(tnum.query(query = "glasser/the_martian_1# has *", max = 20))
 ```
+
 # Citation
-Technical support: Yuli Jin, Runqi Zhao, Ranfei Xu  
-sentimentr: https://github.com/trinker/sentimentr  
-r-bloggers: https://www.r-bloggers.com/2020/04/sentiment-analysis-in-r-with-sentimentr-that-handles-negation-valence-shifters
+
+Technical support:
+
+Yuli Jin: Code for comparison visualization Line 100 - 138
+
+Runqi Zhao: tnum Visualization advice
+
+Ranfei Xu: tnum Visualization advice
+
+Tyler Rinker (2014): *sentimentr,* \text{[online]} <https://github.com/trinker/sentimentr>
+
+AbdulMajedRaja RS (2016), *Sentiment Analysis in R with {sentimentr} that handles Negation (Valence Shifters),* \text[online] <https://www.r-bloggers.com/2020/04/sentiment-analysis-in-r-with-sentimentr-that-handles-negation-valence-shifters>
 
 \newpage
+
 # Appendix
+
 ```{r}
 # table outcome
 knitr::kable(head(sentence[,1:6], n = 10), booktab = T, caption = "Original Data Frame", row.names = F) %>%
@@ -221,7 +240,8 @@ knitr::kable(head(sentence_tidy[11:13,1:7]), booktab = T, caption = "Tidy Data F
   kable_styling(latex_options = "striped") %>% column_spec(column = 5, width = "4.5cm")
 ```
 
-Emotion Level Analysis 
+Emotion Level Analysis
+
 ```{r, fig.align='center'}
 # Emotion level plot
 sentence_out_emo <- sentence_tidy %>% dplyr::mutate(emotion_split = get_sentences(string.value))%$%

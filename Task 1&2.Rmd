@@ -10,16 +10,20 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 pacman::p_load('tnum','tidytext','readr','tidyverse','sentimentr','knitr','kableExtra','reshape2','wordcloud','sentimentr','magrittr','gridExtra')
 ```
 
-# Book Selection  
+# Book Selection
+
 The book I used for text analysis is The Martian by Allen Glasser. The book talked about a series of stories that occur when a person from a different planet comes to a different place. A stranger from a different world, bewildered by his new surroundings, unable to express his desires, falls into the hands of others, and his fate may not be happy.
+
 ```{r}
 # Get data 
 # martian <- gutenberg_download(gutenberg_id = 40992)
 martian <- readRDS("martian.rds")
 ```
 
-# Word Analysis  
+# Word Analysis
+
 At the beginning of the analysis, I used inner_join to join three different lexicons with the original data to identify the sentiment word.By inner join three different lexicons we will have following plots.
+
 ```{r}
 # tidy data
 data_tidy <- martian %>%
@@ -66,10 +70,13 @@ ggplot(plot_data, aes(index, sentiment, fill = method)) +
       facet_wrap(~method, ncol = 1, scales = "free_y") +
       theme_bw()
 ```
-\newpage
-After these plots, I realized there might be more negative emotion than positive emotion in this book. As you can see in “bing” lexicons, for instance, it indicates there are more negatives from the beginning of the book. By looking for other plots, we can also realize the negative emotion starting from the beginning. The three lexicons use different scales to measure the sentiment level, it is obvious that the definition of the data joined by these individual lexicons are different. Therefore, it is reasonable to have different interpretations under different lexicons. 
 
-Next, I compared positive and negative sentiment under the original database. Even though we can see the word “great” used a lot in the book, it is still hard to change the entire analysis for the book. 
+\newpage
+
+After these plots, I realized there might be more negative emotion than positive emotion in this book. As you can see in "bing" lexicons, for instance, it indicates there are more negatives from the beginning of the book. By looking for other plots, we can also realize the negative emotion starting from the beginning. The three lexicons use different scales to measure the sentiment level, it is obvious that the definition of the data joined by these individual lexicons are different. Therefore, it is reasonable to have different interpretations under different lexicons.
+
+Next, I compared positive and negative sentiment under the original database. Even though we can see the word "great" used a lot in the book, it is still hard to change the entire analysis for the book.
+
 ```{r, fig.cap="Negative and Positive Word Count",fig.align='center', fig.height=3,fig.width=6}
 # set the theme for the following plot
 mytheme_1 <- theme_bw() + theme(panel.border = element_blank(),
@@ -95,14 +102,17 @@ bing_word_counts %>%
       labs(x = "Contribution to sentiment",
            y = NULL) + mytheme_1
 ```
-## Wordclouds
-A word cloud is a way to show how often words are used throughout the book, which allows us to understand better how the words are used in the book, with larger ones indicating more frequent use and vice versa. The word cloud is equivalent to presenting the most common words in the book as a whole, in a better visual format. On Figure 3, the word “eye“ and “light” under specific conditions that show it came up a lot.
 
-Positive and negative emotional word clouds (Figure 4) can more visually reflect the distribution of emotions throughout the book, and we can present different emotional word clouds by changing the number of words that are used. The positive and negative word cloud might be similar with the positive and negative word count that shown above, but this is more on the entire data frame. 
+## Wordclouds
+
+A word cloud is a way to show how often words are used throughout the book, which allows us to understand better how the words are used in the book, with larger ones indicating more frequent use and vice versa. The word cloud is equivalent to presenting the most common words in the book as a whole, in a better visual format. On Figure 3, the word "eye" and "light" under specific conditions that show it came up a lot.
+
+Positive and negative emotional word clouds (Figure 4) can more visually reflect the distribution of emotions throughout the book, and we can present different emotional word clouds by changing the number of words that are used. The positive and negative word cloud might be similar with the positive and negative word count that shown above, but this is more on the entire data frame.
 
 # Conclusion
-Under a series text analysis, I have a basic view for the book I chose. Even though the Martian is science fiction, it came up with a different perspective I never thought about before. Furthermore, I realized that although the number of positive words is higher than the number of negative words, the total ratio of negative words is higher than that of positive words.
-\vspace{-0.8cm}
+
+Under a series text analysis, I have a basic view for the book I chose. Even though the Martian is science fiction, it came up with a different perspective I never thought about before. Furthermore, I realized that although the number of positive words is higher than the number of negative words, the total ratio of negative words is higher than that of positive words. \vspace{-0.8cm}
+
 ```{r, fig.cap="WordCloud For the Book", fig.align='center', fig.width=7, fig.height=4}
 data_tidy %>%
   anti_join(stop_words) %>%
@@ -120,9 +130,11 @@ data_tidy %>%
 ```
 
 # Extra Credit
-Using different lexicon for sentiment analysis:\ $loughran$  
+
+Using different lexicon for sentiment analysis: $loughran$
 
 As you can see follow, the result by using this package is similar to the result I got from other three packages. In addition, this graph is very similar to the second graph I have on Figure 1.
+
 ```{r, fig.cap="Loughran", fig.align='center', fig.width=5, fig.height=4}
 # basically re-do the previous steps 
 lran <- data_tidy %>% 
@@ -140,7 +152,6 @@ lran %>%
   labs(title = "Loughran") + mytheme_1
 ```
 
-
-
 # Citation:
-Text Mining with R: https://www.tidytextmining.com/
+
+Julia Silge and David Robinson (2016), *Sentiment analysis with tidy data*, [online] <https://www.tidytextmining.com/>
